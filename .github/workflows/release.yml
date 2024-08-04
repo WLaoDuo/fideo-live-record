@@ -2,14 +2,14 @@ name: Build and Release fideo
 
 on:
   push:
-    branches:
-      - release
+    # branches:
+    #   - release
 jobs:
   build:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [macos-latest, windows-latest]
+        os: [macos-latest, windows-latest, ubuntu-latest]
     steps:
     - uses: actions/checkout@v4
 
@@ -35,6 +35,8 @@ jobs:
           pnpm build:win
         elif [ "${{ runner.os }}" == "macOS" ]; then
           pnpm build:mac
+        elif [ "${{ runner.os }}" == "ubuntu-latest" ]; then
+          pnpm build:linux
         fi
       shell: bash
 
@@ -58,6 +60,14 @@ jobs:
       with:
         name: build-mac-arm-${{ env.VERSION }}
         path: dist/fideo-${{ env.VERSION }}-arm64.dmg
+    
+    - name: Upload Linux build artifact
+      if: ${{ runner.os == 'ubuntu-latest' }}
+      uses: actions/upload-artifact@v4
+      with:
+        name: build-linux-${{ env.VERSION }}
+        path: dist/fideo-${{ env.VERSION }}*  # 替换为实际的 Linux 打包输出文件路径
+
 
   release:
     needs: build
@@ -87,14 +97,21 @@ jobs:
       with:
         name: build-mac-arm-${{ env.VERSION }}
         path: .
+    
+    - name: Download Linux build artifact
+      uses: actions/download-artifact@v4
+      with:
+        name: build-linux-${{ env.VERSION }}
+        path: .
 
     - name: Upload Release Asset
       uses: softprops/action-gh-release@v2
       env:
-        GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         files: |
           fideo-${{ env.VERSION }}-x64.dmg
           fideo-${{ env.VERSION }}-arm64.dmg
           fideo-${{ env.VERSION }}.exe
+          fideo-${{ env.VERSION }}.AppImage
         tag_name: v${{ env.VERSION }}
