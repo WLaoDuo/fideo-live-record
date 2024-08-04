@@ -43,7 +43,7 @@ async function baseGetStripchatLiveUrlsPlugin(roomUrl, others = {}) {
   // const matches = htmlContent.match(scriptReg)
   // const modelID = response.messages.0.modelId
   const modelID=JSON.parse(data)
-  modelID=modelID.messages[0].modelId
+  const roomId=modelID.messages[0].modelId
   const errMessage=response.errmsg
   
   const url = `https://edge-hls.doppiocdn.com/hls/${roomId}/master/${roomId}_auto.m3u8?playlistType=lowLatency`
