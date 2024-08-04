@@ -52,8 +52,6 @@ async function baseGetStripchatLiveUrlsPlugin(roomUrl, others = {}) {
       modelId= 'OffLine'
       return { code: 0}
     }
-  } else {
-    return {code:CRAWLER_ERROR_CODE.INVALID_URL}
   }
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -88,13 +86,7 @@ async function baseGetStripchatLiveUrlsPlugin(roomUrl, others = {}) {
       code: SUCCESS_CODE,
       liveUrls: [url]
     }
-  }else{
-    return {
-      code:0
-    }
   }
-
-  
 }
 
 export const getStripchatLiveUrlsPlugin = captureError(baseGetStripchatLiveUrlsPlugin)
