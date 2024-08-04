@@ -7,17 +7,20 @@ import { SUCCESS_CODE } from '../../../code'
 
 const log = debug('fideo-crawler-stripchat')
 
-function getRoomIdByUrl(url) {
+function getmodelIdByUrl(url) {
   return new URL(url).pathname.split('/')[1]
 }
 
+
+
 async function baseGetStripchatLiveUrlsPlugin(roomUrl, others = {}) {
-  const modelName = getRoomIdByUrl(roomUrl)
+  const modelName = getmodelIdByUrl(roomUrl)
   const { proxy, cookie } = others
 
   log('modelName:', modelName, 'cookie:', cookie, 'proxy:', proxy)
-
-  const response = (
+  
+//////////////// get_modelId(name) ////////////////////////////////////////////////////////////
+  const response1 = (
     await request(`https://zh.stripchat.com/api/front/v2/models/username/${modelName}/chat`, {
       method: 'get',
       proxy,
@@ -37,27 +40,33 @@ async function baseGetStripchatLiveUrlsPlugin(roomUrl, others = {}) {
       	// "Connection": "close"
       }
     })
-  ).data
+  )
+  console.log(response1.status)
+  let modelId ="false"
 
-  // const scriptReg = /<script\b[^>]*>([\s\S]*?)<\/script>/gi
-  // const matches = htmlContent.match(scriptReg)
-
-  const modelID=JSON.parse(data)
-
-  const errMessage=response.errmsg
-  
-  if (response.data.messages.length > 2) {
-    const roomId = response.data.messages[0].modelID
-  } else {
-    const roomId= 'OffLine'
-    return {
-      code: CRAWLER_ERROR_CODE.NOT_URLS
+  if ( response1.status==200 ) {
+    if(response1.data.messages.length > 2) {
+      modelId = response1.data.messages[0].modelId
+    } else {
+      console.log(response1.data)
+      modelId= 'OffLine'
+      return { code: 0}
     }
+  } else {
+    return {code:CRAWLER_ERROR_CODE.INVALID_URL}
   }
+//////////////////////////////////////////////////////////////////////////////////////////////////
 
+
+
+
+
+
+
+  console.log("modelID:",modelId)
 
   const response2 = (
-    await request(`https://edge-hls.doppiocdn.com/hls/${roomId}/master/${roomId}_auto.m3u8?playlistType=lowLatency`, {
+    await request(`https://edge-hls.doppiocdn.com/hls/${modelId}/master/${modelId}_auto.m3u8?playlistType=lowLatency`, {
       method: 'get',
       proxy,
       headers: {
@@ -66,24 +75,26 @@ async function baseGetStripchatLiveUrlsPlugin(roomUrl, others = {}) {
         'User-Agent': DESKTOP_USER_AGENT ,
       }
     })
-  ).data
+  )
   
-  // response2.code
-  const scriptReg = `(https:\/\/[\w\-\.]+\/hls\/[\d]+\/[\d\_p]+\.m3u8\?playlistType=lowLatency)`
-  const matches = response2.match(scriptReg)
-  if (matches && matches.length > 0) {
+  // console.log(response2.data,response2.status)
+  const scriptReg = /(https:\/\/[\w\-\.]+\/hls\/[\d]+\/[\d\_p]+\.m3u8\?playlistType=lowLatency)/
+  const matches = response2.data.match(scriptReg)
+  if (response2.status==200 && matches && matches.length > 0) {
     const url=matches[0]
+    console.log(url)
+
+    return {
+      code: SUCCESS_CODE,
+      liveUrls: [url]
+    }
+  }else{
+    return {
+      code:0
+    }
   }
-
-
-
-
 
   
-  return {
-    code: SUCCESS_CODE,
-    liveUrls: [url]
-  }
 }
 
 export const getStripchatLiveUrlsPlugin = captureError(baseGetStripchatLiveUrlsPlugin)
