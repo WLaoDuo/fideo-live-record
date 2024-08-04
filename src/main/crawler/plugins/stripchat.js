@@ -50,12 +50,30 @@ async function baseGetStripchatLiveUrlsPlugin(roomUrl, others = {}) {
     const roomId = response.data.messages[0].modelID
   } else {
     const roomId= 'OffLine'
+    return {
+      code: CRAWLER_ERROR_CODE.NOT_URLS
+    }
   }
 
 
-
-  const url = `https://edge-hls.doppiocdn.com/hls/${roomId}/master/${roomId}_auto.m3u8?playlistType=lowLatency`
+  const response2 = (
+    await request(`https://edge-hls.doppiocdn.com/hls/${roomId}/master/${roomId}_auto.m3u8?playlistType=lowLatency`, {
+      method: 'get',
+      proxy,
+      headers: {
+        // cookie,
+        // 'User-Agent':'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36',
+        'User-Agent': DESKTOP_USER_AGENT ,
+      }
+    })
+  ).data
   
+  // response2.code
+  const scriptReg = `(https:\/\/[\w\-\.]+\/hls\/[\d]+\/[\d\_p]+\.m3u8\?playlistType=lowLatency)`
+  const matches = response2.match(scriptReg)
+  if (matches && matches.length > 0) {
+    const url=matches[0]
+  }
 
 
 
