@@ -1,9 +1,9 @@
 import debug from 'debug'
 
-import { request , DESKTOP_USER_AGENT } from '../base-request.js'
+import { DESKTOP_USER_AGENT, request } from '../base-request.js'
 import { captureError } from '../capture-error.js'
 
-import { CRAWLER_ERROR_CODE, SUCCESS_CODE } from '../../../code'
+import { SUCCESS_CODE } from '../../../code'
 
 const log = debug('fideo-crawler-stripchat')
 
@@ -41,7 +41,9 @@ async function baseGetStripchatLiveUrlsPlugin(roomUrl, others = {}) {
 
   // const scriptReg = /<script\b[^>]*>([\s\S]*?)<\/script>/gi
   // const matches = htmlContent.match(scriptReg)
-  const modelID = response.messages.0.modelId
+  // const modelID = response.messages.0.modelId
+  const modelID=JSON.parse(data)
+  modelID=modelID.messages[0].modelId
   const errMessage=response.errmsg
   
   const url = `https://edge-hls.doppiocdn.com/hls/${roomId}/master/${roomId}_auto.m3u8?playlistType=lowLatency`
