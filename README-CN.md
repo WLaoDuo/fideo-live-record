@@ -46,10 +46,10 @@ sudo xattr -r -d com.apple.quarantine /Applications/Fideo.app
 
 ## ❓ 如何在本地运行？
 ```shell
-pnpm install
+npm install
 ```
 ```shell
-pnpm debug
+npm start dev
 ```
 ## Star 历史
 
