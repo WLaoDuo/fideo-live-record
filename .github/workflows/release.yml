@@ -98,11 +98,11 @@ jobs:
         name: build-mac-arm-${{ env.VERSION }}
         path: .
     
-    - name: Download Linux build artifact
-      uses: actions/download-artifact@v4
-      with:
-        name: build-linux-${{ env.VERSION }}
-        path: .
+    # - name: Download Linux build artifact
+    #   uses: actions/download-artifact@v4
+    #   with:
+    #     name: build-linux-${{ env.VERSION }}
+    #     path: .
 
     - name: Upload Release Asset
       uses: softprops/action-gh-release@v2
@@ -113,5 +113,4 @@ jobs:
           fideo-${{ env.VERSION }}-x64.dmg
           fideo-${{ env.VERSION }}-arm64.dmg
           fideo-${{ env.VERSION }}.exe
-          fideo-${{ env.VERSION }}.AppImage
         tag_name: v${{ env.VERSION }}
