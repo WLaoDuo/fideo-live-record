@@ -1,23 +1,23 @@
 import debug from 'debug'
 
+import { getBigoLiveUrlsPlugin } from './plugins/bigo'
 import { getBilibiliLiveUrlsPlugin } from './plugins/bilibili'
 import { getCCLiveUrlsPlugin } from './plugins/cc'
 import { getDouYinLiveUrlsPlugin } from './plugins/douyin'
 import { getDouyuLiveUrlsPlugin } from './plugins/douyu'
-import { getHuyaLiveUrlsPlugin } from './plugins/huya'
-import { getKuaishouLiveUrlsPlugin } from './plugins/kuaishou'
-import { getYoutubeLiveUrlsPlugin } from './plugins/youtube'
-import { getTwitchLiveUrlsPlugin } from './plugins/twitch'
-import { getTiktokLiveUrlsPlugin } from './plugins/tiktok'
-import { getWeiboLiveUrlsPlugin } from './plugins/weibo'
 import { getHuaJiaoLiveUrlsPlugin } from './plugins/huajiao'
-import { getTaobaoLiveUrlsPlugin } from './plugins/taobao'
-import { getBigoLiveUrlsPlugin } from './plugins/bigo'
-import { getYYLiveUrlsPlugin } from './plugins/yy'
+import { getHuyaLiveUrlsPlugin } from './plugins/huya'
 import { getJDLiveUrlsPlugin } from './plugins/jd'
+import { getKuaishouLiveUrlsPlugin } from './plugins/kuaishou'
 import { getMomoLiveUrlsPlugin } from './plugins/momo'
 import { getShiGuangLiveUrlsPlugin } from './plugins/shiguang'
 import { getStripchatLiveUrlsPlugin } from './plugins/stripchat'
+import { getTaobaoLiveUrlsPlugin } from './plugins/taobao'
+import { getTiktokLiveUrlsPlugin } from './plugins/tiktok'
+import { getTwitchLiveUrlsPlugin } from './plugins/twitch'
+import { getWeiboLiveUrlsPlugin } from './plugins/weibo'
+import { getYoutubeLiveUrlsPlugin } from './plugins/youtube'
+import { getYYLiveUrlsPlugin } from './plugins/yy'
 
 import { CRAWLER_ERROR_CODE } from '../../code'
 
@@ -65,9 +65,9 @@ const hostnameToPlatformCrawlerFnMap = {
 
   'web.immomo.com': getMomoLiveUrlsPlugin,
 
-  'wap.rengzu.com': getShiGuangLiveUrlsPlugin
+  'wap.rengzu.com': getShiGuangLiveUrlsPlugin,
 
-  'zh.stripchat.com' : getStripchatLiveUrlsPlugin
+  'zh.stripchat.com' : getStripchatLiveUrlsPlugin,
   'www.stripchat.com': getStripchatLiveUrlsPlugin
 }
 
