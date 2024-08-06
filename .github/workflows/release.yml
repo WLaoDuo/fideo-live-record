@@ -35,7 +35,7 @@ jobs:
           pnpm build:win
         elif [ "${{ runner.os }}" == "macOS" ]; then
           pnpm build:mac
-        elif [ "${{ runner.os }}" == "ubuntu-latest" ]; then
+        elif [ "${{ runner.os }}" == "Linux" ]; then
           pnpm build:linux
         fi
       shell: bash
