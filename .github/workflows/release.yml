@@ -47,12 +47,12 @@ jobs:
         name: build-win-${{ env.VERSION }}
         path: dist/fideo-${{ env.VERSION }}.exe
 
-    - name: Upload macOS build artifacts
+    - name: Upload macOS build artifacts (x64)
       if: ${{ runner.os == 'macOS' }}
       uses: actions/upload-artifact@v4
       with:
         name: build-mac-${{ env.VERSION }}
-        path: dist/fideo-${{ env.VERSION }}*.dmg
+        path: dist/fideo-${{ env.VERSION }}-x64.dmg
     
     - name: Upload Linux build artifact
       if: ${{ runner.os == 'Linux' }}
@@ -79,17 +79,11 @@ jobs:
         name: build-win-${{ env.VERSION }}
         path: .
 
-    - name: Download macOS build artifacts (x64)
+    - name: Download macOS build artifacts
       uses: actions/download-artifact@v4
       with:
         name: build-mac-${{ env.VERSION }}
         path: .
-
-    # - name: Download macOS build artifacts (arm)
-    #   uses: actions/download-artifact@v4
-    #   with:
-    #     name: build-mac-arm-${{ env.VERSION }}
-    #     path: .
     
     - name: Download Linux build artifact
       uses: actions/download-artifact@v4
@@ -103,5 +97,5 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         files: |
-          fideo-${{ env.VERSION }}.*
+          fideo-${{ env.VERSION }}*
         tag_name: v${{ env.VERSION }}
