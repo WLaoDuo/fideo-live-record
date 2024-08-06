@@ -51,7 +51,8 @@ sudo xattr -r -d com.apple.quarantine /Applications/Fideo.app
 npm install
 ```
 ```shell
-npm run dev
+npm install cross-env --save-dev
+npm run debug
 ```
 
 ## Star History
