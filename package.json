@@ -14,7 +14,7 @@
     "start": "electron-vite preview",
     "dev": "electron-vite dev",
     "release": "bumpp",
-    "debug": "DEBUG=fideo-* electron-vite dev",
+    "debug": "cross-env DEBUG=fideo-* electron-vite dev", //npm install cross-env --save-dev,跨平台开发使用 cross-env 来设置环境变量,可win下调试
     "build": "npm run typecheck && electron-vite build",
     "postinstall": "electron-builder install-app-deps",
     "build:unpack": "npm run build && electron-builder --dir",
@@ -69,6 +69,7 @@
     "@vitejs/plugin-react": "^4.2.1",
     "autoprefixer": "^10.4.19",
     "bumpp": "^9.4.1",
+    "cross-env": "^7.0.3",
     "electron": "^31.1.0",
     "electron-builder": "24.9.1",
     "electron-vite": "^2.0.0",
