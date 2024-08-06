@@ -9,7 +9,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [windows-latest, ubuntu-latest]
+        os: [windows-latest, ubuntu-latest,macos-latest]
     steps:
     - uses: actions/checkout@v4
 
@@ -47,26 +47,19 @@ jobs:
         name: build-win-${{ env.VERSION }}
         path: dist/fideo-${{ env.VERSION }}.exe
 
-    # - name: Upload macOS build artifacts (x64)
-    #   if: ${{ runner.os == 'macOS' }}
-    #   uses: actions/upload-artifact@v4
-    #   with:
-    #     name: build-mac-x64-${{ env.VERSION }}
-    #     path: dist/fideo-${{ env.VERSION }}-x64.dmg
-
-    # - name: Upload macOS build artifacts (arm)
-    #   if: ${{ runner.os == 'macOS' }}
-    #   uses: actions/upload-artifact@v4
-    #   with:
-    #     name: build-mac-arm-${{ env.VERSION }}
-    #     path: dist/fideo-${{ env.VERSION }}-arm64.dmg
+    - name: Upload macOS build artifacts
+      if: ${{ runner.os == 'macOS' }}
+      uses: actions/upload-artifact@v4
+      with:
+        name: build-mac-x64-${{ env.VERSION }}
+        path: dist/fideo-${{ env.VERSION }}*.dmg
     
     - name: Upload Linux build artifact
       if: ${{ runner.os == 'Linux' }}
       uses: actions/upload-artifact@v4
       with:
         name: build-linux-${{ env.VERSION }}
-        path: dist/fideo-${{ env.VERSION }}*  # 替换为实际的 Linux 打包输出文件路径
+        path: dist/fideo-${{ env.VERSION }}*
 
 
   release:
@@ -86,17 +79,17 @@ jobs:
         name: build-win-${{ env.VERSION }}
         path: .
 
-    # - name: Download macOS build artifacts (x64)
-    #   uses: actions/download-artifact@v4
-    #   with:
-    #     name: build-mac-x64-${{ env.VERSION }}
-    #     path: .
+    - name: Download macOS build artifacts (x64)
+      uses: actions/download-artifact@v4
+      with:
+        name: build-mac-x64-${{ env.VERSION }}
+        path: .
 
-    # - name: Download macOS build artifacts (arm)
-    #   uses: actions/download-artifact@v4
-    #   with:
-    #     name: build-mac-arm-${{ env.VERSION }}
-    #     path: .
+    - name: Download macOS build artifacts (arm)
+      uses: actions/download-artifact@v4
+      with:
+        name: build-mac-arm-${{ env.VERSION }}
+        path: .
     
     - name: Download Linux build artifact
       uses: actions/download-artifact@v4
@@ -110,8 +103,5 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         files: |
-          fideo-${{ env.VERSION }}.exe
-
-# fideo-${{ env.VERSION }}-x64.dmg
-# fideo-${{ env.VERSION }}-arm64.dmg
+          fideo-${{ env.VERSION }}.*
         tag_name: v${{ env.VERSION }}
