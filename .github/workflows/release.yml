@@ -52,7 +52,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: build-mac-${{ env.VERSION }}
-        path: dist/fideo-${{ env.VERSION }}-x64.dmg
+        path: dist/fideo-${{ env.VERSION }}*
     
     - name: Upload Linux build artifact
       if: ${{ runner.os == 'Linux' }}
