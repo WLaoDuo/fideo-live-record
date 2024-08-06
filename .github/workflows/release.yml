@@ -62,7 +62,7 @@ jobs:
     #     path: dist/fideo-${{ env.VERSION }}-arm64.dmg
     
     - name: Upload Linux build artifact
-      if: ${{ runner.os == 'ubuntu-latest' }}
+      if: ${{ runner.os == 'Linux' }}
       uses: actions/upload-artifact@v4
       with:
         name: build-linux-${{ env.VERSION }}
@@ -98,11 +98,11 @@ jobs:
     #     name: build-mac-arm-${{ env.VERSION }}
     #     path: .
     
-    # - name: Download Linux build artifact
-    #   uses: actions/download-artifact@v4
-    #   with:
-    #     name: build-linux-${{ env.VERSION }}
-    #     path: .
+    - name: Download Linux build artifact
+      uses: actions/download-artifact@v4
+      with:
+        name: build-linux-${{ env.VERSION }}
+        path: .
 
     - name: Upload Release Asset
       uses: softprops/action-gh-release@v2
