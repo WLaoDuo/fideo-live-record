@@ -47,12 +47,12 @@ jobs:
         name: build-win-${{ env.VERSION }}
         path: dist/fideo-${{ env.VERSION }}.exe
 
-    - name: Upload macOS build artifacts (x64)
+    - name: Upload macOS build artifacts
       if: ${{ runner.os == 'macOS' }}
       uses: actions/upload-artifact@v4
       with:
         name: build-mac-${{ env.VERSION }}
-        path: dist/fideo-${{ env.VERSION }}*
+        path: dist/fideo-${{ env.VERSION }}*.dmg
     
     - name: Upload Linux build artifact
       if: ${{ runner.os == 'Linux' }}
