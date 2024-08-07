@@ -4,6 +4,9 @@ on:
   push:
     # branches:
     #   - release
+
+    tags:
+      - 'v*'
 jobs:
   build:
     runs-on: ${{ matrix.os }}
